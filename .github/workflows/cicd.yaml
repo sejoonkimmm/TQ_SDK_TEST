@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 env:
-  REGION: eu-west10
+  REGION: europe-west10
   REPO_NAME: testcontainer
   IMAGE_NAME: ${REGION}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${REPO_NAME}/my-app:${{ github.sha }}
 
@@ -28,6 +28,8 @@ jobs:
     - name: Configure Docker
       run: |
         gcloud auth configure-docker ${REGION}-docker.pkg.dev
+        gcloud auth list
+        gcloud config list
 
     - name: Build and Push Docker image
       run: |
