@@ -49,7 +49,7 @@ jobs:
         IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/my-app:${{ github.sha }}
       run: |
         docker build -t $IMAGE_NAME .
-        docker push --verbose $IMAGE_NAME
+        docker push $IMAGE_NAME
 
     - name: Deploy to Compute Engine
       run: |
