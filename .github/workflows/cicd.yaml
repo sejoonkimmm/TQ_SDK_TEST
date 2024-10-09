@@ -10,7 +10,7 @@ on:
 env:
   REGION: eu-west10
   REPO_NAME: testcontainer
-  IMAGE_NAME: ${{ secrets.GCP_PROJECT_ID }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${REPO_NAME}/my-app:${{ github.sha }}
+  IMAGE_NAME: ${REGION}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${REPO_NAME}/my-app:${{ github.sha }}
 
 jobs:
   build-and-push:
