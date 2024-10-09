@@ -27,7 +27,6 @@ jobs:
 
     - name: Configure Docker
       run: |
-        gcloud auth login
         gcloud auth configure-docker ${REGION}-docker.pkg.dev
         gcloud auth list
         gcloud config list
