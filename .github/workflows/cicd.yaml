@@ -42,11 +42,14 @@ jobs:
     - name: Configure Docker
       run: |
         gcloud auth configure-docker
+        gcloud auth configure-docker gcr.io
 
     - name: Build and Push Docker image
+      env:
+        IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/my-app:${{ github.sha }}
       run: |
-        docker build -t ${{ env.IMAGE_NAME }} .
-        docker push ${{ env.IMAGE_NAME }}
+        docker build -t $IMAGE_NAME .
+        docker push --verbose $IMAGE_NAME
 
     - name: Deploy to Compute Engine
       run: |
@@ -57,6 +60,5 @@ jobs:
     - name: Verify deployment
       run: |
         sleep 30
-        gcloud compute ssh ${{ secrets.GCE_INSTANCE_NAME }} --zone ${{ secrets.GCE_ZONE }} --command="
-          curl -X POST http://localhost:5000/optimize -H 'Content-Type: application/json' -d '{}'
-        "
+        EXTERNAL_IP=$(gcloud compute instances describe ${{ secrets.GCE_INSTANCE_NAME }} --zone ${{ secrets.GCE_ZONE }} --format='get(networkInterfaces[0].accessConfigs[0].natIP)')
+        curl -X POST http://$EXTERNAL_IP:5000/optimize -H 'Content-Type: application/json' -d '{}' -v
