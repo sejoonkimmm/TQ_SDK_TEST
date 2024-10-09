@@ -28,7 +28,7 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     env:
-      IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/my-app:${{ github.sha }}
+      IMAGE_NAME: europe-west10-a-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/my-repository/my-app:${{ github.sha }}
     steps:
     - uses: actions/checkout@v2
 
@@ -46,7 +46,7 @@ jobs:
 
     - name: Build and Push Docker image
       env:
-        IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/my-app:${{ github.sha }}
+        IMAGE_NAME: europe-west10-a-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/my-repository/my-app:${{ github.sha }}
       run: |
         docker build -t $IMAGE_NAME .
         docker push $IMAGE_NAME
